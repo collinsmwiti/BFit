@@ -25,6 +25,17 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mealEditText"
+        android:background="@color/colorTextIcons"
+        android:layout_above="@+id/findMealsButton"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        android:hint="Enter a Meal"
+        android:layout_centerHorizontal="true" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
