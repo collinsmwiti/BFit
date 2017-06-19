@@ -1,10 +1,18 @@
 package com.example.collins.bfit;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by collins on 6/19/17.
@@ -29,41 +37,43 @@ public class NutritionixService {
         call.enqueue(callback);
     }
 
-//    //to enhance data to be displayed inform of an arraylist
-//    public ArrayList<Meal> processResults(Response response) {
-//        ArrayList<Meal> meals = new ArrayList<>();
-//
-//        try {
-//            String jsonData = response.body().string();
-//            if (response.isSuccessful()) {
-//                JSONObject mealJSON = new JSONObject(jsonData);
-//                JSONArray brandJSON = mealJSON.getJSONArray("branded");
-//
-//                for (int i = 0; i < brandJSON.length(); i++) {
-//                    JSONObject myBrand = brandJSON.getJSONObject(i);
-//
-//                     //String imageurl
-//                    String imageUrl = myBrand.getJSONObject("photo").getString("thumb");
-//                    //String foodname
-//                    String foodName = myBrand.getString("food_name");
-//                    //String servingUnit
-//                    String servingUnit = myBrand.getString("serving_unit");
-//                    //String brandName
-//                    String brandName = myBrand.getString("brand_name");
-//                    //String serving Qty
-//                    String servingQty = myBrand.getString("serving_qty");
-//                    //String mealCalories
-//                    String mealCalories = myBrand.getString("nf_calories");
-//                  Meal meal = new Meal(imageUrl, foodName, servingUnit, brandName, servingQty, mealCalories);
-//                    meals.add(meal);
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return meals;
-//    }
+    //to enhance data to be displayed inform of an arraylist
+    public ArrayList<Meal> processResults(Response response) {
+        ArrayList<Meal> meals = new ArrayList<>();
+
+        try {
+            String jsonData = response.body().string();
+            if (response.isSuccessful()) {
+                JSONObject mealJSON = new JSONObject(jsonData);
+                JSONArray brandJSON = mealJSON.getJSONArray("branded");
+
+                for (int i = 0; i < brandJSON.length(); i++) {
+                    JSONObject myBrand = brandJSON.getJSONObject(i);
+
+                     //String imageurl
+                    String imageUrl = myBrand.getJSONObject("photo").getString("thumb");
+                    //String foodname
+                    String foodName = myBrand.getString("food_name");
+                    //String servingUnit
+                    String servingUnit = myBrand.getString("serving_unit");
+                    //String brandName
+                    String brandName = myBrand.getString("brand_name");
+                    //String serving Qty
+                    String servingQty = myBrand.getString("serving_qty");
+                    //String mealCalories
+                    String mealCalories = myBrand.getString("nf_calories");
+
+                    //to clarify with our model Meal.java
+                  Meal meal = new Meal(imageUrl, foodName, servingUnit, brandName, servingQty, mealCalories);
+                    meals.add(meal);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return meals;
+    }
 }
