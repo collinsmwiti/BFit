@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="Be Fit"
         android:layout_marginTop="35dp"
-        android:id="@+id/textView"
+        android:id="@+id/appNameTextView"
         android:textColor="@color/colorTextIcons"
         android:textSize="40sp"
         android:layout_alignParentTop="true"
