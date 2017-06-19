@@ -1,5 +1,5 @@
 //package
-package com.example.collins.bfit;
+package com.example.collins.bfit.models;
 
 /**
  * Created by collins on 6/19/17.

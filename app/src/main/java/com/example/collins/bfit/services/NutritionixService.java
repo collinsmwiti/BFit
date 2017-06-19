@@ -1,4 +1,7 @@
-package com.example.collins.bfit;
+package com.example.collins.bfit.services;
+
+import com.example.collins.bfit.Constants;
+import com.example.collins.bfit.models.Meal;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,5 +1,5 @@
 //package
-package com.example.collins.bfit;
+package com.example.collins.bfit.ui;
 
 //imports
 
@@ -10,6 +10,10 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.collins.bfit.R;
+import com.example.collins.bfit.models.Meal;
+import com.example.collins.bfit.services.NutritionixService;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,5 +1,5 @@
 //package
-package com.example.collins.bfit;
+package com.example.collins.bfit.ui;
 
 //imports
 
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.collins.bfit.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
