@@ -2,6 +2,7 @@
 package com.example.collins.bfit;
 
 //imports
+
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -12,21 +13,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 //class MainActivity
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
-    private Button mFindMealsButton;
-    private EditText mMealEditText;
-    private TextView mAppNameTextView;
+    @Bind(R.id.findMealsButton) Button mFindMealsButton;
+    @Bind(R.id.mealEditText) EditText mMealEditText;
+    @Bind(R.id.appNameTextView) TextView mAppNameTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //added butterknife
+        ButterKnife.bind(this);
 
-        mMealEditText = (EditText) findViewById(R.id.mealEditText);
-        mFindMealsButton = (Button) findViewById(R.id.findMealsButton);
-        mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
         //adding a font
         Typeface ranchoFont = Typeface.createFromAsset(getAssets(), "fonts/Rancho.ttf");
         mAppNameTextView.setTypeface(ranchoFont);

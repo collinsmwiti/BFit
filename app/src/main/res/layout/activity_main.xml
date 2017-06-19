@@ -20,7 +20,7 @@
         android:layout_marginTop="35dp"
         android:id="@+id/appNameTextView"
         android:textColor="@color/colorTextIcons"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
