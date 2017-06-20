@@ -17,9 +17,14 @@ import android.widget.TextView;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
+import com.example.collins.bfit.adapters.CoverFlowAdapter;
+import com.example.collins.bfit.models.Game;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 //class MainActivity
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
+    private FeatureCoverFlow coverFlow;
+    private CoverFlowAdapter adapter;
+    private ArrayList<Game> games;
 
     @Bind(R.id.findMealsButton) Button mFindMealsButton;
     @Bind(R.id.mealEditText) EditText mMealEditText;
@@ -36,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        coverFlow = (FeatureCoverFlow) findViewById(R.id.coverflow);
+
+        settingDummyData();
+        adapter = new CoverFlowAdapter(this, games);
+        coverFlow.setAdapter(adapter);
+        coverFlow.setOnScrollPositionListener(onScrollListener());
         //added butterknife
         ButterKnife.bind(this);
 
@@ -67,5 +81,32 @@ public class MainActivity extends AppCompatActivity {
     //adding shared preferences
     private void addToSharedPreferences(String meal) {
         mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
+    }
+
+    private FeatureCoverFlow.OnScrollPositionListener onScrollListener() {
+        return new FeatureCoverFlow.OnScrollPositionListener() {
+            @Override
+            public void onScrolledToPosition(int position) {
+                Log.v("MainActivty", "position: " + position);
+            }
+
+            @Override
+            public void onScrolling() {
+                Log.i("MainActivity", "scrolling");
+            }
+        };
+    }
+
+    private void settingDummyData() {
+        games = new ArrayList<>();
+        games.add(new Game(R.mipmap.oranges, "Fruit"));
+        games.add(new Game(R.mipmap.burger, "Burger"));
+        games.add(new Game(R.mipmap.pork, "Pork"));
+        games.add(new Game(R.mipmap.cola, "Drink"));
+        games.add(new Game(R.mipmap.chicken, "Chicken"));
+        games.add(new Game(R.mipmap.chapati, "Chapati"));
+        games.add(new Game(R.mipmap.spinach, "Spinach"));
+        games.add(new Game(R.mipmap.chips, "Chips"));
+        games.add(new Game(R.mipmap.milk, "Milk"));
     }
 }
