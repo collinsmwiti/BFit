@@ -53,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 if (v == mFindMealsButton) {
                     String meal = mMealEditText.getText().toString();
                     Log.d(TAG, meal);
-                    addToSharedPreferences(meal);
+                    if(!(meal).equals("")) {
+                        addToSharedPreferences(meal);
+                    }
                     Intent intent = new Intent(MainActivity.this, MealListActivity.class);
                     intent.putExtra("meal", meal);
                     startActivity(intent);

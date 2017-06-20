@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
@@ -53,9 +52,13 @@ public class MealListActivity extends AppCompatActivity {
 //        mMealTextView.setText("Here is the details of your meal: " + meal);
         getMeals(meal);
 
+        //added shared preferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecentMeal = mSharedPreferences.getString(Constants.PREFERENCES_MEAL_KEY, null);
-        Log.d("Shared Pref Meal", mRecentMeal);
+//        Log.d("Shared Pref Meal", mRecentMeal);
+        if (mRecentMeal != null) {
+            getMeals(mRecentMeal);
+        }
     }
 
     //receiving a response from NutritionixService class
