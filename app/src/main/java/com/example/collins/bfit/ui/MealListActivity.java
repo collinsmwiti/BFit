@@ -4,11 +4,15 @@ package com.example.collins.bfit.ui;
 //imports
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
 import com.example.collins.bfit.adapters.MealListAdapter;
 import com.example.collins.bfit.models.Meal;
@@ -26,6 +30,8 @@ import okhttp3.Response;
 //class MealListActivity
 public class MealListActivity extends AppCompatActivity {
     public static final String TAG = MealListActivity.class.getSimpleName();
+    private SharedPreferences mSharedPreferences;
+    private String mRecentMeal;
 //    @Bind(R.id.mealTextView) TextView mMealTextView;
 //    @Bind(R.id.listView)
 //    ListView mListView;
@@ -46,6 +52,10 @@ public class MealListActivity extends AppCompatActivity {
         String meal = intent.getStringExtra("meal");
 //        mMealTextView.setText("Here is the details of your meal: " + meal);
         getMeals(meal);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentMeal = mSharedPreferences.getString(Constants.PREFERENCES_MEAL_KEY, null);
+        Log.d("Shared Pref Meal", mRecentMeal);
     }
 
     //receiving a response from NutritionixService class

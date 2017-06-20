@@ -9,4 +9,5 @@ public class Constants {
     public static final String Nutritionix_Application_Key = BuildConfig.NUTRITIONIX_APPLICATION_KEY;
     public static final String NUTRITIONIX_BASE_URL = "https://trackapi.nutritionix.com/v2/search/instant";
     public static final String NUTRITIONIX_MEAL_QUERY_PARAMETER = "query";
+    public static final String PREFERENCES_MEAL_KEY = "meal";
 }
