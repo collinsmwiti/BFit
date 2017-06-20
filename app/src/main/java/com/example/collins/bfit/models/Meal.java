@@ -1,10 +1,14 @@
 //package
 package com.example.collins.bfit.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by collins on 6/19/17.
  */
 
+//parceler
+ @Parcel
 //class Meal
 public class Meal {
     private String mImageUrl;
@@ -13,6 +17,8 @@ public class Meal {
     private String mBrandName;
     private String mServingQty;
     private String mMealCalories;
+
+    public Meal() {}
 
     //constructor meal
     public Meal(String imageUrl, String foodName, String servingUnit, String brandName, String servingQty, String mealCalories) {

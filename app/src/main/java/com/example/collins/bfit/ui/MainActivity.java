@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 //gathering data from edit text
                 String meal = mMealEditText.getText().toString();
                 Log.d(TAG, meal);
-                Intent intent = new Intent(MainActivity.this, MealsActivity.class);
+                Intent intent = new Intent(MainActivity.this, MealListActivity.class);
                 intent.putExtra("meal", meal);
                 startActivity(intent);
             }
