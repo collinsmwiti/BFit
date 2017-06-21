@@ -84,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //saving to database
+    //saving to database using unique Node ids(pushID)
     public void saveMealToFirebase(String meal) {
-        mSearchedMealReference.setValue(meal);
+        mSearchedMealReference.push().setValue(meal);
     }
 
 //    //adding shared preferences
