@@ -75,7 +75,7 @@ public class CoverFlowAdapter extends BaseAdapter {
                 final Dialog dialog = new Dialog(activity);
                 dialog.setContentView(R.layout.dialog_game_info);
                 dialog.setCancelable(true); // dimiss when touching outside
-                dialog.setTitle("Game Details");
+                dialog.setTitle("Meal Details");
 
                 TextView text = (TextView) dialog.findViewById(R.id.name);
                 text.setText(getItem(position).getName());

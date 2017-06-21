@@ -3,17 +3,23 @@ package com.example.collins.bfit.ui;
 
 //imports
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
@@ -44,14 +50,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coverFlow = (FeatureCoverFlow) findViewById(R.id.coverflow);
-
-        settingDummyData();
-        adapter = new CoverFlowAdapter(this, games);
-        coverFlow.setAdapter(adapter);
-        coverFlow.setOnScrollPositionListener(onScrollListener());
-        //added butterknife
         ButterKnife.bind(this);
+
+        Fragment main = new Fragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, main);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.addToBackStack(null);
+        ft.commit();
+//        coverFlow = (FeatureCoverFlow) findViewById(R.id.coverflow);
+
+//        settingDummyData();
+//        adapter = new CoverFlowAdapter(this, games);
+//        coverFlow.setAdapter(adapter);
+//        coverFlow.setOnScrollPositionListener(onScrollListener());
+        //added butterknife
+
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mEditor = mSharedPreferences.edit();
@@ -83,30 +97,75 @@ public class MainActivity extends AppCompatActivity {
         mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
     }
 
-    private FeatureCoverFlow.OnScrollPositionListener onScrollListener() {
-        return new FeatureCoverFlow.OnScrollPositionListener() {
-            @Override
-            public void onScrolledToPosition(int position) {
-                Log.v("MainActivty", "position: " + position);
-            }
+//    private FeatureCoverFlow.OnScrollPositionListener onScrollListener() {
+//        return new FeatureCoverFlow.OnScrollPositionListener() {
+//            @Override
+//            public void onScrolledToPosition(int position) {
+//                Log.v("MainActivity", "position: " + position);
+//            }
+//
+//            @Override
+//            public void onScrolling() {
+//                Log.i("MainActivity", "scrolling");
+//            }
+//        };
+//    }
+//
+//    private void settingDummyData() {
+//        games = new ArrayList<>();
+//        games.add(new Game(R.mipmap.oranges, "Fruit"));
+//        games.add(new Game(R.mipmap.burger, "Burger"));
+//        games.add(new Game(R.mipmap.pork, "Pork"));
+//        games.add(new Game(R.mipmap.cola, "Drink"));
+//        games.add(new Game(R.mipmap.chicken, "Chicken"));
+//        games.add(new Game(R.mipmap.chapati, "Chapati"));
+//        games.add(new Game(R.mipmap.spinach, "Spinach"));
+//        games.add(new Game(R.mipmap.chips, "Chips"));
+//        games.add(new Game(R.mipmap.milk, "Milk"));
+//    }
 
-            @Override
-            public void onScrolling() {
-                Log.i("MainActivity", "scrolling");
-            }
-        };
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
-    private void settingDummyData() {
-        games = new ArrayList<>();
-        games.add(new Game(R.mipmap.oranges, "Fruit"));
-        games.add(new Game(R.mipmap.burger, "Burger"));
-        games.add(new Game(R.mipmap.pork, "Pork"));
-        games.add(new Game(R.mipmap.cola, "Drink"));
-        games.add(new Game(R.mipmap.chicken, "Chicken"));
-        games.add(new Game(R.mipmap.chapati, "Chapati"));
-        games.add(new Game(R.mipmap.spinach, "Spinach"));
-        games.add(new Game(R.mipmap.chips, "Chips"));
-        games.add(new Game(R.mipmap.milk, "Milk"));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_call:
+                Intent dialer= new Intent(Intent.ACTION_DIAL);
+                startActivity(dialer);
+                return true;
+            case R.id.action_speech:
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                startActivityForResult(intent, 1234);
+
+                return true;
+            case R.id.action_contacts:
+                Intent call= new Intent(Intent.ACTION_DIAL);
+                startActivity(call);
+                return true;
+            case R.id.action_settings:
+                Intent settings = new Intent(android.provider.Settings.ACTION_SETTINGS);
+                startActivity(settings);
+                return true;
+           default:
+                return super.onOptionsItemSelected(item);
+        }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1234 && resultCode == RESULT_OK) {
+            String voice_text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+            Toast.makeText(getApplicationContext(),voice_text,Toast.LENGTH_LONG).show();
+
+        }
+    }
+
 }
