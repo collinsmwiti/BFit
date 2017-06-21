@@ -59,20 +59,35 @@
         android:layout_height="wrap_content"
         android:id="@+id/mealEditText"
         android:background="@color/colorTextIcons"
-        android:layout_above="@+id/findMealsButton"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="27dp"
         android:padding="5dp"
         android:hint="Enter a Meal"
+        android:layout_above="@+id/findMealsButton"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Find a Meal"
+        android:text="Find Meals"
         android:id="@+id/findMealsButton"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible"
+        android:layout_above="@+id/savedMealsButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="My Saved Meals"
+        android:id="@+id/savedMealsButton"
+        android:background="@color/colorDivider"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@color/colorTextIcons" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

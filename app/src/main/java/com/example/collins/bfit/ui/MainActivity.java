@@ -31,7 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 //class MainActivity
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String TAG = MainActivity.class.getSimpleName();
 
 //    private SharedPreferences mSharedPreferences;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.findMealsButton) Button mFindMealsButton;
     @Bind(R.id.mealEditText) EditText mMealEditText;
     @Bind(R.id.appNameTextView) TextView mAppNameTextView;
+    @Bind(R.id.savedMealsButton) Button mSavedMealsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mSavedMealsButton.setOnClickListener(this);
 
         Fragment main = new Fragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -178,6 +181,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mSearchedMealReference.removeEventListener(mSearchedMealReferenceListener);
+    }
+
+    @Override
+    public void onClick(View v) {
+         if (v == mSavedMealsButton) {
+            Intent intent = new Intent(MainActivity.this, SavedMealListActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

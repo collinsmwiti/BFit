@@ -19,4 +19,6 @@ public class SplashActivity extends AppCompatActivity {
         videoview.setVideoURI(uri);
         videoview.start();
     }
+
+
 }
