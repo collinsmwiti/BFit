@@ -6,10 +6,8 @@ package com.example.collins.bfit.ui;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +31,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mEditor;
+//    private SharedPreferences mSharedPreferences;
+//    private SharedPreferences.Editor mEditor;
+    private DatabaseReference mSearchedMealReference;
 
     @Bind(R.id.findMealsButton) Button mFindMealsButton;
     @Bind(R.id.mealEditText) EditText mMealEditText;
@@ -40,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    //writing to the firebase
+        mSearchedMealReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -51,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         ft.addToBackStack(null);
         ft.commit();
 //
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mEditor = mSharedPreferences.edit();
+//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        mEditor = mSharedPreferences.edit();
 
         //adding a font
         Typeface ranchoFont = Typeface.createFromAsset(getAssets(), "fonts/Rancho.ttf");
@@ -64,10 +71,11 @@ public class MainActivity extends AppCompatActivity {
                 //gathering data from edit text
                 if (v == mFindMealsButton) {
                     String meal = mMealEditText.getText().toString();
+                    saveMealToFirebase(meal);
                     Log.d(TAG, meal);
-                    if(!(meal).equals("")) {
-                        addToSharedPreferences(meal);
-                    }
+//                    if(!(meal).equals("")) {
+//                        addToSharedPreferences(meal);
+//                    }
                     Intent intent = new Intent(MainActivity.this, MealListActivity.class);
                     intent.putExtra("meal", meal);
                     startActivity(intent);
@@ -76,10 +84,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //adding shared preferences
-    private void addToSharedPreferences(String meal) {
-        mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
+    //saving to database
+    public void saveMealToFirebase(String meal) {
+        mSearchedMealReference.setValue(meal);
     }
+
+//    //adding shared preferences
+//    private void addToSharedPreferences(String meal) {
+//        mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
