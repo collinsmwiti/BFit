@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //    private SharedPreferences mSharedPreferences;
 //    private SharedPreferences.Editor mEditor;
     private DatabaseReference mSearchedMealReference;
+    private ValueEventListener mSearchedMealReferenceListener;
 
     @Bind(R.id.findMealsButton) Button mFindMealsButton;
     @Bind(R.id.mealEditText) EditText mMealEditText;
@@ -46,6 +50,37 @@ public class MainActivity extends AppCompatActivity {
                 .getInstance()
                 .getReference()
                 .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
+
+        mSearchedMealReferenceListener = mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
+                    String meal = mealSnapshot.getValue().toString();
+                    Log.d("Meals updated", "meal: " + meal);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//    //adding listener
+//        mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
+//                    String meal = mealSnapshot.getValue().toString();
+//                    Log.d("Meals updated", "meal: " + meal); //log
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -136,6 +171,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),voice_text,Toast.LENGTH_LONG).show();
 
         }
+    }
+
+    //removing listeners
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearchedMealReference.removeEventListener(mSearchedMealReferenceListener);
     }
 
 }

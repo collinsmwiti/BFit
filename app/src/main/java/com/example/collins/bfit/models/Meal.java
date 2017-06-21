@@ -11,47 +11,47 @@ import org.parceler.Parcel;
  @Parcel
 //class Meal
 public class Meal {
-    private String mImageUrl;
-    private String mFoodName;
-    private String mServingUnit;
-    private String mBrandName;
-    private String mServingQty;
-    private String mMealCalories;
+    private String imageUrl;
+    private String foodName;
+    private String servingUnit;
+    private String brandName;
+    private String servingQty;
+    private String mealCalories;
 
     public Meal() {}
 
     //constructor meal
     public Meal(String imageUrl, String foodName, String servingUnit, String brandName, String servingQty, String mealCalories) {
-        this.mImageUrl = imageUrl;
-        this.mFoodName = foodName;
-        this.mServingUnit = servingUnit;
-        this.mBrandName = brandName;
-        this.mServingQty = servingQty;
-        this.mMealCalories = mealCalories;
+        this.imageUrl = imageUrl;
+        this.foodName = foodName;
+        this.servingUnit = servingUnit;
+        this.brandName = brandName;
+        this.servingQty = servingQty;
+        this.mealCalories = mealCalories;
     }
 
     //getters methods
     public String getImageUrl() {
-        return  mImageUrl;
+        return  imageUrl;
     }
 
     public String getFoodName() {
-        return mFoodName;
+        return foodName;
     }
 
     public String getServingUnit() {
-        return mServingUnit;
+        return servingUnit;
     }
 
     public String getBrandName() {
-        return mBrandName;
+        return brandName;
     }
 
     public String getServingQty() {
-        return mServingQty;
+        return servingQty;
     }
 
     public String getMealCalories() {
-        return mMealCalories;
+        return mealCalories;
     }
 }
