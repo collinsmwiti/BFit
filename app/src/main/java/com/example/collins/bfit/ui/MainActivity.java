@@ -40,40 +40,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ValueEventListener mSearchedMealReferenceListener;
 
     @Bind(R.id.findMealsButton) Button mFindMealsButton;
-    @Bind(R.id.mealEditText) EditText mMealEditText;
+//    @Bind(R.id.mealEditText) EditText mMealEditText;
     @Bind(R.id.appNameTextView) TextView mAppNameTextView;
     @Bind(R.id.savedMealsButton) Button mSavedMealsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    //writing to the firebase
-        mSearchedMealReference = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
-
-        mSearchedMealReferenceListener = mSearchedMealReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
-                    String meal = mealSnapshot.getValue().toString();
-                    Log.d("Meals updated", "meal: " + meal);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-//    //adding listener
-//        mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+//    //writing to the firebase
+//        mSearchedMealReference = FirebaseDatabase
+//                .getInstance()
+//                .getReference()
+//                .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
+//
+//        mSearchedMealReferenceListener = mSearchedMealReference.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
 //                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
 //                    String meal = mealSnapshot.getValue().toString();
-//                    Log.d("Meals updated", "meal: " + meal); //log
+//                    Log.d("Meals updated", "meal: " + meal);
 //                }
 //            }
 //
@@ -82,6 +66,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 //            }
 //        });
+//
+////    //adding listener
+////        mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(DataSnapshot dataSnapshot) {
+////                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
+////                    String meal = mealSnapshot.getValue().toString();
+////                    Log.d("Meals updated", "meal: " + meal); //log
+////                }
+////            }
+////
+////            @Override
+////            public void onCancelled(DatabaseError databaseError) {
+////
+////            }
+////        });
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -108,14 +108,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 //gathering data from edit text
                 if (v == mFindMealsButton) {
-                    String meal = mMealEditText.getText().toString();
-                    saveMealToFirebase(meal);
-                    Log.d(TAG, meal);
+//                    String meal = mMealEditText.getText().toString();
+//                    saveMealToFirebase(meal);
+//                    Log.d(TAG, meal);
 //                    if(!(meal).equals("")) {
 //                        addToSharedPreferences(meal);
 //                    }
                     Intent intent = new Intent(MainActivity.this, MealListActivity.class);
-                    intent.putExtra("meal", meal);
+//                    intent.putExtra("meal", meal);
                     startActivity(intent);
                 }
             }

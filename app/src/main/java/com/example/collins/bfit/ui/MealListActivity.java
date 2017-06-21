@@ -4,11 +4,19 @@ package com.example.collins.bfit.ui;
 //imports
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
 import com.example.collins.bfit.adapters.MealListAdapter;
 import com.example.collins.bfit.models.Meal;
@@ -26,8 +34,9 @@ import okhttp3.Response;
 //class MealListActivity
 public class MealListActivity extends AppCompatActivity {
     public static final String TAG = MealListActivity.class.getSimpleName();
-//    private SharedPreferences mSharedPreferences;
-//    private String mRecentMeal;
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+    private String mRecentMeal;
 //    @Bind(R.id.mealTextView) TextView mMealTextView;
 //    @Bind(R.id.listView)
 //    ListView mListView;
@@ -49,13 +58,17 @@ public class MealListActivity extends AppCompatActivity {
 //        mMealTextView.setText("Here is the details of your meal: " + meal);
         getMeals(meal);
 
-//        //added shared preferences
-//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mRecentMeal = mSharedPreferences.getString(Constants.PREFERENCES_MEAL_KEY, null);
-////        Log.d("Shared Pref Meal", mRecentMeal);
-//        if (mRecentMeal != null) {
-//            getMeals(mRecentMeal);
-//        }
+        //added shared preferences
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRecentMeal = mSharedPreferences.getString(Constants.PREFERENCES_MEAL_KEY, null);
+//        Log.d("Shared Pref Meal", mRecentMeal);
+        if (mRecentMeal != null) {
+            getMeals(mRecentMeal);
+        }
+    }
+
+    private void addToSharedPreferences(String meal) {
+        mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
     }
 
     //receiving a response from NutritionixService class
@@ -111,5 +124,42 @@ public class MealListActivity extends AppCompatActivity {
 //                }
             }
         });
+    }
+
+    //adding search view
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        ButterKnife.bind(this);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        //adding searchview listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                addToSharedPreferences(query);
+                getMeals(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
