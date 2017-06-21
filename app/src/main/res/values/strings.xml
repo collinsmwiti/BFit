@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">BFit</string>
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="slide_1_title">Hello Friend!</string>
+    <string name="slide_1_desc">Welcome to BFit App!</string>
+
+    <string name="slide_2_title">Meal Categories</string>
+    <string name="slide_2_desc">Check for your favourite Meals!</string>
+
+    <string name="slide_3_title">Check for their calories</string>
+    <string name="slide_3_desc">View each and every meal according to its calories!</string>
+
+    <string name="slide_4_title">Share the goodies</string>
+    <string name="slide_4_desc">Touch your loved ones hearts by informing them about healthy eating!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
 </resources>
