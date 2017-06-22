@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,42 +45,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//    //writing to the firebase
-//        mSearchedMealReference = FirebaseDatabase
-//                .getInstance()
-//                .getReference()
-//                .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
-//
-//        mSearchedMealReferenceListener = mSearchedMealReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
-//                    String meal = mealSnapshot.getValue().toString();
-//                    Log.d("Meals updated", "meal: " + meal);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-////    //adding listener
-////        mSearchedMealReference.addValueEventListener(new ValueEventListener() {
-////            @Override
-////            public void onDataChange(DataSnapshot dataSnapshot) {
-////                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
-////                    String meal = mealSnapshot.getValue().toString();
-////                    Log.d("Meals updated", "meal: " + meal); //log
-////                }
-////            }
-////
-////            @Override
-////            public void onCancelled(DatabaseError databaseError) {
-////
-////            }
-////        });
+    //writing to the firebase
+        mSearchedMealReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.FIREBASE_CHILD_SEARCHED_MEAL);
+
+        mSearchedMealReferenceListener = mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
+                    String meal = mealSnapshot.getValue().toString();
+                    Log.d("Meals updated", "meal: " + meal);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    //adding listener
+        mSearchedMealReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot mealSnapshot : dataSnapshot.getChildren()) {
+                    String meal = mealSnapshot.getValue().toString();
+                    Log.d("Meals updated", "meal: " + meal); //log
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
