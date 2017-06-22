@@ -17,6 +17,7 @@ public class Meal {
     private String brandName;
     private String servingQty;
     private String mealCalories;
+    private String pushId;
 
     public Meal() {}
 
@@ -53,5 +54,13 @@ public class Meal {
 
     public String getMealCalories() {
         return mealCalories;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 }

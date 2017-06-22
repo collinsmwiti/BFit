@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
 import com.example.collins.bfit.models.Meal;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -77,10 +79,19 @@ public class MealDetailFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
 
         if (v == mSaveMealButton) {
-            DatabaseReference restaurantRef = FirebaseDatabase
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+
+            DatabaseReference mealRef = FirebaseDatabase
                     .getInstance()
-                    .getReference(Constants.FIREBASE_CHILD_MEALS);
-            restaurantRef.push().setValue(mMeal);
+                    .getReference(Constants.FIREBASE_CHILD_MEALS)
+                    .child(uid);
+
+            DatabaseReference pushRef = mealRef.push();
+            String pushId = pushRef.getKey();
+            mMeal.setPushId(pushId);
+            pushRef.setValue(mMeal);
+//            mealRef.push().setValue(mMeal);
             Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
         }
     }

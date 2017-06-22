@@ -10,6 +10,8 @@ import com.example.collins.bfit.R;
 import com.example.collins.bfit.adapters.FirebaseMealViewHolder;
 import com.example.collins.bfit.models.Meal;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,7 +20,7 @@ import butterknife.ButterKnife;
 
 //class SavedMealListActivity
 public class SavedMealListActivity extends AppCompatActivity {
-    private DatabaseReference mRestaurantReference;
+    private DatabaseReference mMealReference;
     private FirebaseRecyclerAdapter mFirebaseAdapter;
 
     @Bind(R.id.recyclerView)
@@ -31,7 +33,15 @@ public class SavedMealListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meals);
         ButterKnife.bind(this);
 
-        mRestaurantReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_MEALS);
+//        mMealReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_MEALS);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        mMealReference = FirebaseDatabase
+                .getInstance()
+                .getReference(Constants.FIREBASE_CHILD_MEALS)
+                .child(uid);
+
         setUpFirebaseAdapter();
     }
 
@@ -39,7 +49,7 @@ public class SavedMealListActivity extends AppCompatActivity {
     private void setUpFirebaseAdapter() {
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Meal, FirebaseMealViewHolder>
                 (Meal.class, R.layout.meal_list_item, FirebaseMealViewHolder.class,
-                        mRestaurantReference) {
+                        mMealReference) {
 
             @Override
             protected void populateViewHolder(FirebaseMealViewHolder viewHolder,
