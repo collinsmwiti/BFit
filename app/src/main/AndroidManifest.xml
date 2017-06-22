@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,23 +22,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SplashActivity" />
+
+        <activity android:name=".ui.LoginActivity" />
+
+        <activity android:name=".ui.CreateAccountActivity" />
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:theme="@style/WelcomeTheme" />
+
+        <activity android:name=".ui.MainActivity"/>
+
         <activity android:name=".ui.MealListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.MealDetailActivity" />
-        <activity
-            android:name=".ui.WelcomeActivity"
-            android:theme="@style/WelcomeTheme" />
+
+
         <activity android:name=".ui.SavedMealListActivity">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.CreateAccountActivity" />
-        <activity android:name=".ui.MainActivity"/>
+
+        <activity android:name=".ui.MealDetailActivity" />
+
+
     </application>
 
 </manifest>
