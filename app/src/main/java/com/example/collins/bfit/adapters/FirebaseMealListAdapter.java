@@ -2,12 +2,18 @@ package com.example.collins.bfit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.collins.bfit.Constants;
+import com.example.collins.bfit.R;
 import com.example.collins.bfit.models.Meal;
 import com.example.collins.bfit.ui.MealDetailActivity;
+import com.example.collins.bfit.ui.MealDetailFragment;
 import com.example.collins.bfit.util.ItemTouchHelperAdapter;
 import com.example.collins.bfit.util.OnStartDragListener;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -33,6 +39,7 @@ public class FirebaseMealListAdapter extends FirebaseRecyclerAdapter<Meal, Fireb
     private Context mContext;
     private ChildEventListener mChildEventListener;
     private ArrayList<Meal> mMeals = new ArrayList<>();
+    private int mOrientation;
 
     public FirebaseMealListAdapter(Class<Meal> modelClass, int modelLayout,
                                    Class<FirebaseMealViewHolder> viewHolderClass,
@@ -75,6 +82,11 @@ public class FirebaseMealListAdapter extends FirebaseRecyclerAdapter<Meal, Fireb
     @Override
     protected void populateViewHolder(final FirebaseMealViewHolder viewHolder, Meal model, int position) {
         viewHolder.bindMeal(model);
+        mOrientation = viewHolder.itemView.getResources().getConfiguration().orientation;
+        if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            createDetailFragment(0);
+        }
+
         viewHolder.mMealImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -88,10 +100,16 @@ public class FirebaseMealListAdapter extends FirebaseRecyclerAdapter<Meal, Fireb
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MealDetailActivity.class);
-                intent.putExtra("position", viewHolder.getAdapterPosition());
-                intent.putExtra("meals", Parcels.wrap(mMeals));
-                mContext.startActivity(intent);
+                int itemPosition = viewHolder.getAdapterPosition();
+                if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    createDetailFragment(itemPosition);
+                } else {
+                    Intent intent = new Intent(mContext, MealDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_MEALS, Parcels.wrap(mMeals));
+                    intent.putExtra(Constants.KEY_SOURCE, Constants.SOURCE_SAVED);
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
@@ -123,5 +141,16 @@ public class FirebaseMealListAdapter extends FirebaseRecyclerAdapter<Meal, Fireb
         super.cleanup();
         setIndexInFirebase();
         mRef.removeEventListener(mChildEventListener);
+    }
+
+    private void createDetailFragment(int position) {
+        // Creates new RestaurantDetailFragment with the given position:
+        MealDetailFragment detailFragment = MealDetailFragment.newInstance(mMeals, position, Constants.SOURCE_SAVED);
+        // Gathers necessary components to replace the FrameLayout in the layout with the RestaurantDetailFragment:
+        FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+        //  Replaces the FrameLayout with the RestaurantDetailFragment:
+        ft.replace(R.id.mealDetailContainer, detailFragment);
+        // Commits these changes:
+        ft.commit();
     }
 }

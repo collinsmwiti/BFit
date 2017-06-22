@@ -3,6 +3,9 @@ package com.example.collins.bfit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
 import com.example.collins.bfit.models.Meal;
 import com.example.collins.bfit.ui.MealDetailActivity;
+import com.example.collins.bfit.ui.MealDetailFragment;
+import com.example.collins.bfit.util.OnMealSelectedListener;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -30,17 +36,19 @@ import butterknife.ButterKnife;
 public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealViewHolder> {
     private ArrayList<Meal> mMeals = new ArrayList<>();
     private Context mContext;
+    private OnMealSelectedListener mOnMealSelectedListener;
 
     //constructor MealListAdapter
-    public MealListAdapter(Context context, ArrayList<Meal> meals) {
+    public MealListAdapter(Context context, ArrayList<Meal> meals, OnMealSelectedListener mealSelectedListener) {
         mContext = context;
         mMeals = meals;
+        mOnMealSelectedListener = mealSelectedListener;
     }
     //methods required for recycler.viewholder
     @Override
     public MealListAdapter.MealViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_list_item, parent, false);
-        MealViewHolder viewHolder = new MealViewHolder(view);
+        MealViewHolder viewHolder = new MealViewHolder(view, mMeals, mOnMealSelectedListener);
         return viewHolder;
     }
 
@@ -63,13 +71,38 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
         @Bind(R.id.brandTextView) TextView mBrandTextView;
 
         private Context mContext;
+        private int mOrientation;
+        private ArrayList<Meal> mMeals = new ArrayList<>();
+        private OnMealSelectedListener mMealSelectedListener;
+
 
         //constructor MealViewHolder
-        public MealViewHolder(View itemView) {
+        public MealViewHolder(View itemView, ArrayList<Meal> meals, OnMealSelectedListener mealSelectedListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
+            // Determines the current orientation of the device:
+            mOrientation = itemView.getResources().getConfiguration().orientation;
+            mMeals = meals;
+            mMealSelectedListener = mealSelectedListener;
+
+            if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                createDetailFragment(0);
+            }
             itemView.setOnClickListener(this);
+        }
+
+
+        // Takes position of meal in list as parameter:
+        private void createDetailFragment(int position) {
+            // Creates new RestaurantDetailFragment with the given position:
+            MealDetailFragment detailFragment = MealDetailFragment.newInstance(mMeals, position, Constants.SOURCE_FIND);
+            // Gathers necessary components to replace the FrameLayout in the layout with the RestaurantDetailFragment:
+            FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
+            //  Replaces the FrameLayout with the RestaurantDetailFragment:
+            ft.replace(R.id.mealDetailContainer, detailFragment);
+            // Commits these changes:
+            ft.commit();
         }
 
         public void bindMeal(Meal meal) {
@@ -82,10 +115,16 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
         @Override
         public void onClick(View v) {
             int itemPosition = getLayoutPosition();
-            Intent intent = new Intent(mContext, MealDetailActivity.class);
-            intent.putExtra("position", itemPosition);
-            intent.putExtra("meals", Parcels.wrap(mMeals));
-            mContext.startActivity(intent);
+            mMealSelectedListener.onMealSelected(itemPosition, mMeals, Constants.SOURCE_FIND);
+            if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                createDetailFragment(itemPosition);
+            } else {
+                Intent intent = new Intent(mContext, MealDetailActivity.class);
+                intent.putExtra(Constants.EXTRA_KEY_POSITION, itemPosition);
+                intent.putExtra(Constants.EXTRA_KEY_MEALS, Parcels.wrap(mMeals));
+                intent.putExtra(Constants.KEY_SOURCE, Constants.SOURCE_FIND);
+                mContext.startActivity(intent);
+            }
         }
     }
 }

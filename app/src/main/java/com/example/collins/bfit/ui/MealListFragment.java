@@ -1,6 +1,7 @@
 package com.example.collins.bfit.ui;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +22,7 @@ import com.example.collins.bfit.R;
 import com.example.collins.bfit.adapters.MealListAdapter;
 import com.example.collins.bfit.models.Meal;
 import com.example.collins.bfit.services.NutritionixService;
+import com.example.collins.bfit.util.OnMealSelectedListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class MealListFragment extends Fragment {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
     private String mRecentMeals;
+    private OnMealSelectedListener mOnMealSelectedListener;
 
     public MealListFragment() {
         // Required empty public constructor
@@ -77,7 +80,7 @@ public class MealListFragment extends Fragment {
                     @Override
                     public void run() {
                         //using custom adapters with recycler view
-                        mAdapter = new MealListAdapter(getActivity(), mMeals);
+                        mAdapter = new MealListAdapter(getActivity(), mMeals, mOnMealSelectedListener);
                         mRecyclerView.setAdapter(mAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                         mRecyclerView.setLayoutManager(layoutManager);
@@ -163,6 +166,16 @@ public class MealListFragment extends Fragment {
 
     private void addToSharedPreferences(String meal) {
         mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnMealSelectedListener = (OnMealSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + e.getMessage());
+        }
     }
 }
 

@@ -31,7 +31,11 @@
         <activity
             android:name=".ui.WelcomeActivity"
             android:theme="@style/WelcomeTheme" />
-        <activity android:name=".ui.SavedMealListActivity" />
+        <activity android:name=".ui.SavedMealListActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.MainActivity" />
+        </activity>
         <activity android:name=".ui.CreateAccountActivity" />
         <activity android:name=".ui.MainActivity"/>
     </application>

@@ -23,6 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -40,13 +42,18 @@ public class MealDetailFragment extends Fragment implements View.OnClickListener
     @Bind(R.id.saveMealButton) TextView mSaveMealButton;
 
     private Meal mMeal;
+    private ArrayList<Meal> mMeals;
+    private int mPosition;
+    private String mSource;
 
 
     //constructor MealDetailFragment
-    public static MealDetailFragment newInstance(Meal meal) {
+    public static MealDetailFragment newInstance(ArrayList<Meal> meals, Integer position, String source) {
         MealDetailFragment mealDetailFragment = new MealDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable("meal", Parcels.wrap(meal));
+        args.putParcelable(Constants.EXTRA_KEY_MEALS, Parcels.wrap(meals));
+        args.putInt(Constants.EXTRA_KEY_POSITION, position);
+        args.putString(Constants.KEY_SOURCE, source);
         mealDetailFragment.setArguments(args);
         return mealDetailFragment;
     }
@@ -54,7 +61,11 @@ public class MealDetailFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMeal = Parcels.unwrap(getArguments().getParcelable("meal"));
+        mMeals = Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_KEY_MEALS));
+        mPosition = getArguments().getInt(Constants.EXTRA_KEY_POSITION);
+        mMeal = mMeals.get(mPosition);
+        mSource = getArguments().getString(Constants.KEY_SOURCE);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -64,14 +75,19 @@ public class MealDetailFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_meal_detail, container, false);
         ButterKnife.bind(this, view);
 
-        Picasso.with(view.getContext()).load(mMeal.getImageUrl()).fit().centerCrop().into(mImageLabel);
-        mNameLabel.setText(mMeal.getFoodName());
-        mCaloriesLabel.setText("Calories: " + mMeal.getMealCalories());
-        mBrandLabel.setText("Brand: " + mMeal.getBrandName());
-        mServingUnitLabel.setText("Serving unit: " + mMeal.getServingUnit());
-        mServingQtyLabel.setText("Serving Quantity: " + mMeal.getServingQty());
+        if (mSource.equals(Constants.SOURCE_SAVED)) {
+            mSaveMealButton.setVisibility(View.GONE);
+        }
+//        else {
+            Picasso.with(view.getContext()).load(mMeal.getImageUrl()).fit().centerCrop().into(mImageLabel);
+            mNameLabel.setText(mMeal.getFoodName());
+            mCaloriesLabel.setText("Calories: " + mMeal.getMealCalories());
+            mBrandLabel.setText("Brand: " + mMeal.getBrandName());
+            mServingUnitLabel.setText("Serving unit: " + mMeal.getServingUnit());
+            mServingQtyLabel.setText("Serving Quantity: " + mMeal.getServingQty());
+            mSaveMealButton.setOnClickListener(this);
+//        }
 
-        mSaveMealButton.setOnClickListener(this);
         return view;
     }
 

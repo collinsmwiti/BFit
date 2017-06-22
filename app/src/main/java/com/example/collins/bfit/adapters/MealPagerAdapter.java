@@ -17,15 +17,17 @@ import java.util.ArrayList;
 //class MealPagerAdapter
 public class MealPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Meal> mMeals;
+    private String mSource;
 
-    public MealPagerAdapter(FragmentManager fm, ArrayList<Meal> meals) {
+    public MealPagerAdapter(FragmentManager fm, ArrayList<Meal> meals, String source) {
         super(fm);
         mMeals = meals;
+        mSource = source;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return MealDetailFragment.newInstance(mMeals.get(position));
+        return MealDetailFragment.newInstance(mMeals, position, mSource);
     }
 
     @Override
