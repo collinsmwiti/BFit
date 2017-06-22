@@ -22,6 +22,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import static com.example.collins.bfit.R.id.mealImageView;
+
 /**
  * Created by collins on 6/21/17.
  */
@@ -31,6 +33,8 @@ public class FirebaseMealViewHolder extends RecyclerView.ViewHolder implements V
 
     View mView;
     Context mContext;
+
+    public ImageView mMealImageView;
 
 
     //constructor FirebaseMealViewHolder
@@ -43,12 +47,12 @@ public class FirebaseMealViewHolder extends RecyclerView.ViewHolder implements V
 
     //bind
     public void bindMeal(Meal meal) {
-        ImageView mealImageView = (ImageView) mView.findViewById(R.id.mealImageView);
+        mMealImageView = (ImageView) mView.findViewById(R.id.mealImageView);
         TextView foodTextView = (TextView) mView.findViewById(R.id.mealNameTextView);
         TextView caloriesTextView = (TextView) mView.findViewById(R.id.caloriesTextView);
         TextView brandTextView = (TextView) mView.findViewById(R.id.brandTextView);
 
-        Picasso.with(mContext).load(meal.getImageUrl()).fit().centerCrop().into(mealImageView);
+        Picasso.with(mContext).load(meal.getImageUrl()).fit().centerCrop().into(mMealImageView);
         foodTextView.setText(meal.getFoodName());
         caloriesTextView.setText("Calories: " + meal.getMealCalories());
         brandTextView.setText("Brand: " + meal.getBrandName());
