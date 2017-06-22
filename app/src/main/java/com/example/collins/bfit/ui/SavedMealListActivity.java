@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,14 +44,15 @@ public class SavedMealListActivity extends AppCompatActivity implements OnStartD
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
 
-        mMealReference = FirebaseDatabase
+        Query query = FirebaseDatabase
                 .getInstance()
                 .getReference(Constants.FIREBASE_CHILD_MEALS)
-                .child(uid);
+                .child(uid)
+                .orderByChild(Constants.FIREBASE_QUERY_INDEX);
 
         mFirebaseAdapter = new FirebaseMealListAdapter(Meal.class,
                 R.layout.meal_list_item_drag, FirebaseMealViewHolder.class,
-                mMealReference, this, this);
+                query, this, this);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -18,6 +18,7 @@ public class Meal {
     private String servingQty;
     private String mealCalories;
     private String pushId;
+    String index;
 
     public Meal() {}
 
@@ -29,6 +30,7 @@ public class Meal {
         this.brandName = brandName;
         this.servingQty = servingQty;
         this.mealCalories = mealCalories;
+        this.index = "not_specified";
     }
 
     //getters methods
@@ -62,5 +64,13 @@ public class Meal {
 
     public void setPushId(String pushId) {
         this.pushId = pushId;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 }

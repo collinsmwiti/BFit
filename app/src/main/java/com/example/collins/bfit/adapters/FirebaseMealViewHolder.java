@@ -22,8 +22,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import static com.example.collins.bfit.R.id.mealImageView;
-
 /**
  * Created by collins on 6/21/17.
  */
@@ -42,7 +40,6 @@ public class FirebaseMealViewHolder extends RecyclerView.ViewHolder implements V
         super(itemView);
         mView = itemView;
         mContext = itemView.getContext();
-        itemView.setOnClickListener(this);
     }
 
     //bind
