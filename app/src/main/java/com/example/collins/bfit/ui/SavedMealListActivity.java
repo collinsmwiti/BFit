@@ -48,7 +48,7 @@ public class SavedMealListActivity extends AppCompatActivity {
     //set up firebase adapter
     private void setUpFirebaseAdapter() {
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Meal, FirebaseMealViewHolder>
-                (Meal.class, R.layout.meal_list_item, FirebaseMealViewHolder.class,
+                (Meal.class, R.layout.meal_list_item_drag, FirebaseMealViewHolder.class,
                         mMealReference) {
 
             @Override
