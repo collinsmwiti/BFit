@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.collins.bfit.Constants;
 import com.example.collins.bfit.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -131,9 +132,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        mEditor.putString(Constants.PREFERENCES_MEAL_KEY, meal).apply();
 //    }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -163,8 +165,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(settings);
                 return true;
            default:
-                return super.onOptionsItemSelected(item);
+
         }
+
+        if (id == R.id.action_logout) {
+            logout();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -188,6 +196,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, SavedMealListActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
 }
